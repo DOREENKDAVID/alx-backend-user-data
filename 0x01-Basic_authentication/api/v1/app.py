@@ -30,8 +30,8 @@ def before_request():
     """Handle requests before they reach the routes."""
     if auth is None:
         return
-    path_list =
-    ['/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
+    path_list = ['/api/v1/status/',
+                 '/api/v1/unauthorized/', '/api/v1/forbidden/']
 
     if request.path not in path_list:
         if auth.authorization_header(request) is None:
