@@ -9,9 +9,8 @@ from typing import List, TypeVar
 class Auth:
     """API authentication class"""
 
-
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
-        """ return path and excluded path 
+        """ return path and excluded path
         returns True if the path is not in the list of strings excluded_paths.
         - Returns True if path is None.
         - Returns True if excluded_paths is None or empty.
@@ -31,7 +30,6 @@ class Auth:
                 return False
         return True
 
-
     def authorization_header(self, request=None) -> str:
         """authorization headers
         If request is None, returns None.
@@ -43,7 +41,6 @@ class Auth:
         if not auth_header:
             return None
         return auth_header
-
 
     def current_user(self, request=None) -> TypeVar('User'):
         """return current user"""
