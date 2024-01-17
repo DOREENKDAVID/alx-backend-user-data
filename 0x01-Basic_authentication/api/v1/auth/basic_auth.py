@@ -47,7 +47,7 @@ class BasicAuth(Auth):
             self, decoded_base64_authorization_header: str) -> (str, str):
         """returns the user email and pwd from the Base64 decoded value."""
         if decoded_base64_authorization_header is None:
-            return None
+            return None, None
         if not isinstance(decoded_base64_authorization_header, str):
             return None, None
 
