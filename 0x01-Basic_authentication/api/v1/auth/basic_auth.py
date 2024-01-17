@@ -55,7 +55,10 @@ class BasicAuth(Auth):
         if len(credentials) != 2:
             return None, None
 
-        user_email, user_password = credentials
+        if len(credentials) == 1:
+            user_email, user_password = parts[0], ''
+        else:
+            user_email, user_password = credentials
         return user_email, user_password
 
     def user_object_from_credentials(
