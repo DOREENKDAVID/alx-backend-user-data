@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+"""UserSession module"""
+
+
 from sqlalchemy import Column, String, ForeignKey
 from models.base import Base
 

@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+"""session expiration module"""
+
+
 from api.v1.auth.session_auth import SessionAuth
 from datetime import datetime, timedelta
 from typing import Dict

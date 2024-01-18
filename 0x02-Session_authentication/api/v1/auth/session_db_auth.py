@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+"""db authetification"""
+
+
 from api.v1.auth.session_exp_auth import SessionExpAuth
 from models.user_session import UserSession
 from sqlalchemy.orm.exc import NoResultFound
