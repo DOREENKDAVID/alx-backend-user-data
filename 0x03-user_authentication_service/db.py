@@ -9,6 +9,10 @@ from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.orm.exc import NoResultFound
 
 from user import Base, User
+from typing import TypeVar
+
+VALID_FIELDS = ['id', 'email', 'hashed_password', 'session_id',
+                'reset_token']
 
 
 class DB:
@@ -18,7 +22,7 @@ class DB:
     def __init__(self) -> None:
         """Initialize a new DB instance
         """
-        self._engine = create_engine("sqlite:///a.db", echo=True)
+        self._engine = create_engine("sqlite:///a.db", echo=False)
         Base.metadata.drop_all(self._engine)
         Base.metadata.create_all(self._engine)
         self.__session = None
@@ -34,8 +38,9 @@ class DB:
 
     def add_user(self, email: str, hashed_password: str) -> User:
         """The method should save the user to the database"""
+        if not email or not hashed_password:
+            return
         new_user = User(email=email, hashed_password=hashed_password)
-
         self._session.add(new_user)
         self._session.commit()
 
@@ -46,33 +51,22 @@ class DB:
         returns the first row found in the users table
         as filtered by the method’s input arguments.
         """
+        if not kwargs or any(x not in VALID_FIELDS for x in kwargs):
+            raise InvalidRequestError
+        session = self._session
         try:
-            user = self._session.query(User).filter_by(**kwargs).first()
-            if user is None:
-                raise NoResultFound("Not found")
-            return user
-        except InvalidRequestError as e:
-            raise InvalidRequestError("Invalid")
+            return session.query(User).filter_by(**kwargs).one()
+        except Exception:
+            raise NoResultFound
 
     def update_user(self, user_id: int, **kwargs) -> None:
-        """to locate the user to update, then will update the user’s
-        attributes as passed in the method’s
-        arguments then commit changes to the database"""
-        try:
-            # Find the user by user_id
-            user = self.find_user_by(id=user_id)
-
-            # Update the user's attributes
-            for key, value in kwargs.items():
-                if hasattr(user, key):
-                    setattr(user, key, value)
-                else:
-                    raise ValueError("Error")
-
-            # Commit changes to the database
-            self._session.commit()
-
-        except NoResultFound as e:
-            raise NoResultFound("Not found")
-        except InvalidRequestError as e:
-            raise InvalidRequestError("Invalid")
+        """
+        update_user.
+        """
+        session = self._session
+        user = self.find_user_by(id=user_id)
+        for k, v in kwargs.items():
+            if k not in VALID_FIELDS:
+                raise ValueError
+            setattr(user, k, v)
+        session.commit()
