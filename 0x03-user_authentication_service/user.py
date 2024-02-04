@@ -2,8 +2,7 @@
 """user authentification module"""
 
 
-import sqlalchemy as sa
-import sqlalchemy.orm as so
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -15,15 +14,11 @@ class User(Base):
 
     __tablename__ = 'users'
 
-    id: so.Mapped[int] = so.mapped_column(primary_key=True)
-    email: so.Mapped[str] = so.mapped_column(sa.String(250), unique=True,
-                                             nullable=False)
-    hashed_password: so.Mapped[str] = so.mapped_column(sa.String(250),
-                                                       nullable=False)
-    session_id: so.Mapped[str] = so.mapped_column(sa.String(250),
-                                                  nullable=True)
-    reset_token: so.Mapped[str] = so.mapped_column(sa.String(250),
-                                                   nullable=True)
+    id = Column(Integer, primary_key=True)
+    email = Column(String(250), nullable=False)
+    hashed_password = Column(String(250), nullable=False)
+    session_id = Column(String(250), nullable=True)
+    reset_token = Column(String(250), nullable=True)
 
     def __repr__(self):
         """
