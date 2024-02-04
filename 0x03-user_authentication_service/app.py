@@ -44,7 +44,7 @@ def login() -> str:
         abort(401)
 
 
-@app.route('/sessions' methods=['GET'], strict_slashes=False)
+@app.route('/sessions', methods=['GET'], strict_slashes=False)
 def logout():
     """Log out"""
     session_id = request.cookies.get('session_id')
@@ -56,7 +56,7 @@ def logout():
         abort(403)
 
 
-@app.route('/profile' methods=['GET'], strict_slashes=False)
+@app.route('/profile', methods=['GET'], strict_slashes=False)
 def profile():
     """User profile"""
     session_id = request.cookies.get('session_id')
